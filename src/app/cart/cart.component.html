@@ -1,0 +1,62 @@
+<div *ngIf="carts.length; else nullCart" class="container">
+    <div class="cart-container">
+      <div class="cart-item-details">
+        <div class="cart-item" *ngFor="let cart of carts">
+          <img src="{{ cart.url }}" class="img" />
+          <div class="text">
+            <p>{{ cart.productName }}</p>
+            <p>$ {{ cart.productPrice }}</p>
+            <p> Amount:
+                <select class="number-input" type="number" name="productQuantity"  style="color:rgb(27, 98, 110);" [(ngModel)]="cart.productQuantity" value="{{ cart.productQuantity }}"
+                  (ngModelChange)="[addCart(cart.productName, cart.productQuantity), getTotalPrice(), getCart()]">
+                  <option *ngFor="let i of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]" value="{{ i }}">
+                    {{ i }}
+                  </option>
+                </select>
+              </p>
+              <div style="color: #774a20; font: italic; font-size: 0.8em; font-weight: normal">Choose 0 to remove the item from the cart</div>
+            </div>
+          </div>
+        </div>
+      </div>
+        <form #form="ngForm" (ngSubmit)="onSubmit()" class="form-margin">
+          <div>
+            <p style="color: #774a20; font: italic; font-size: 1.3em; font-weight: normal">Please enter your details below</p>
+
+            <p class="text">Full Name</p>
+            <input type="text" name="fullName" ngModel required minlength="3" maxlength="20" #fullName="ngModel"/>
+            <br />
+            <span style="font: italic; color: red" *ngIf="fullName.invalid && fullName.touched">
+              Name is required with 3 to 20 characters
+            </span>
+          </div>
+    
+          <div>
+            <p class="text">Address</p>
+            <input type="text" name="address" ngModel required minlength="3" maxlength="15" #address="ngModel" />
+            <br />
+            <span style="font: italic; color: red" *ngIf="address.invalid && address.touched">
+              Address is required with 3 to 20 characters 
+            </span>
+          </div>
+    
+          <div>
+            <p class="text">Card Number</p>
+            <input type="text" name="cardNumber" ngModel required minlength="16" maxlength="16" #cardNumber="ngModel"/>
+            <br />
+            <span style="font: italic; color: red" *ngIf="cardNumber.invalid && cardNumber.touched">
+              Card number is required with 16 characters 
+            </span>
+          </div>
+          <p style="color: #774a20; font: italic; font-size: 0.8em; font-weight: normal">We'll never share your payment details with anyone else</p>
+          <button [disabled]="form.invalid" class="btn">Confirm</button>
+        </form>
+        <h1 style="font: italic; text-align: center; color: rgb(54, 113, 161)" >TOTAL: ${{ getTotalPrice() }}</h1>
+      </div>
+      
+<ng-template #nullCart>
+  <div class="empty-cart">
+    <br />
+      <h1>
+        Your cart is empty, please add the <a routerLink="/" style="color:rgb(45, 130, 145);">products</a></h1>
+  </div>
